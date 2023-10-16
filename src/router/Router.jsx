@@ -5,6 +5,7 @@ import PublicGuard from "./Public.guard.jsx";
 import Docs from "../pages/Docs/Docs.jsx";
 import Login from "../pages/Login/Login.jsx";
 import Register from "../pages/Register/Register.jsx";
+import VerifyAccount from "../pages/VerifyAccount/VerifyAccount";
 
 const Router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const Router = createBrowserRouter([
             <Register />
           </PublicGuard>
         ),
+      },
+      {
+        path: "/verify",
+        element: <VerifyAccount />,
       },
     ],
   },
