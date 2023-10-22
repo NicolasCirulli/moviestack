@@ -9,6 +9,7 @@ const authService = {
     async login(data) {
         try {
             const response = await auth.post('/login', data)
+            localStorage.setItem( 'token', response.data.token )
             return response.data
         } catch (error) {
             return error.response.data
@@ -27,15 +28,24 @@ const authService = {
     async verifyAccount( id ){
         try {
             const response = await auth.get('/verify?id='+id)
-            return {
-                status : true
-            }
+            return true
         } catch (error) {
-            return {
-                status : false
-            }
+            return false
         }
-    }
+    },
+    async loginWithToken() {
+        try {
+            const token = localStorage.getItem( 'token' )
+            const response = await auth.post('/login/token',{}, {
+                headers : {
+                    Authorization : 'Bearer ' + token
+                }
+            })
+            return response.data.user
+        } catch (error) {
+            return error.response.data
+        }
+    },
 
 }
 

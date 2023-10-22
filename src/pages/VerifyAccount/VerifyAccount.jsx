@@ -10,7 +10,7 @@ const VerifyAccount = () => {
   const navigate = useNavigate();
   useEffect(() => {
     authService.verifyAccount(searchParams.get("code")).then((res) => {
-      if (res.status) {
+      if (res) {
         alerts.success("Your account has been activated!");
         navigate("/login");
       }

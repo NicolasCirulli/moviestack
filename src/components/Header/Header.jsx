@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -15,14 +15,21 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
-
+import LINKS from "../../router/links";
+import { useSelector } from "react-redux";
 const drawerWidth = 240;
-const navItems = ["Docs", "API KEY", "LOGOUT"];
 
 function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [navItems, setNavItems] = useState(LINKS.PUBLIC_ROUTES);
 
+  const user = useSelector((store) => store.user);
+  useEffect(() => {
+    if (user.name) {
+      setNavItems(LINKS.PRIVATE_ROUTES);
+    }
+  }, [user]);
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -35,10 +42,10 @@ function DrawerAppBar(props) {
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+          <ListItem key={item.name} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <Link to={"/"}>
-                <ListItemText primary={item} />
+              <Link to={item.path}>
+                <ListItemText primary={item.name} />
               </Link>
             </ListItemButton>
           </ListItem>
@@ -51,7 +58,10 @@ function DrawerAppBar(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   const navigate = useNavigate();
-
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -75,12 +85,15 @@ function DrawerAppBar(props) {
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Link to="/" key={item}>
+              <Link to={item.path} key={item.name}>
                 <Button sx={{ color: "#fff" }} onClick={() => navigate("/")}>
-                  {item}
+                  {item.name}
                 </Button>
               </Link>
             ))}
+            <Button sx={{ color: "#fff" }} onClick={logout}>
+              LOGOUT
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>

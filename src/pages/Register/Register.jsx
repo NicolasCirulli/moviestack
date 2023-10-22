@@ -72,7 +72,7 @@ const Register = () => {
           </Button>
         </Stack>
         <Stack spacing={2} direction={"column"}>
-          <Typography>Do you have account?</Typography>
+          <Typography>Already have an account?</Typography>
           <Link to="/login">
             <Button variant="contained" endIcon={<LoginIcon />} fullWidth>
               Login

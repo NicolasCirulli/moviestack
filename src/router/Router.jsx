@@ -6,7 +6,7 @@ import Docs from "../pages/Docs/Docs.jsx";
 import Login from "../pages/Login/Login.jsx";
 import Register from "../pages/Register/Register.jsx";
 import VerifyAccount from "../pages/VerifyAccount/VerifyAccount";
-
+import ApiKey from "../pages/ApiKey/ApiKey";
 const Router = createBrowserRouter([
   {
     path: "/",
@@ -34,6 +34,14 @@ const Router = createBrowserRouter([
           <PublicGuard>
             <Register />
           </PublicGuard>
+        ),
+      },
+      {
+        path: "/api-key",
+        element: (
+          <AuthGuard>
+            <ApiKey />
+          </AuthGuard>
         ),
       },
       {
