@@ -16,11 +16,24 @@ import { loadUser } from "../../store/reducer/user";
 import authService from "../../services/auth.service";
 import { useRef, useState } from "react";
 import { alerts } from "../../utils/alerts";
+import { GoogleLogin } from "@react-oauth/google";
+import decode from "jwt-decode";
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
   const handleLogin = () => {
     authService.login(formData).then((res) => {
+      if (res.user) {
+        alerts.success(res.message);
+        dispatch(loadUser(res.user));
+      } else {
+        alert(res.message);
+      }
+    });
+  };
+  const handleGoogle = (data) => {
+    authService.login(data).then((res) => {
+      console.log(res);
       if (res.user) {
         alerts.success(res.message);
         dispatch(loadUser(res.user));
@@ -50,6 +63,16 @@ const Login = () => {
         maxWidth={"500px"}
         onInput={handleInput}
       >
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            const { email, name, sub } = decode(credentialResponse.credential);
+            handleGoogle({ email, password: sub });
+          }}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        />
+        ;
         <FormControl>
           <InputLabel htmlFor="email-login">Email address</InputLabel>
           <Input id="email-login" type="email" ref={email} />

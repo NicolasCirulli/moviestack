@@ -13,6 +13,8 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import authService from "../../services/auth.service";
+import { GoogleLogin } from "@react-oauth/google";
+import decode from "jwt-decode";
 
 const Register = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -34,6 +36,16 @@ const Register = () => {
       name: name.current.children[0].value,
       email: email.current.children[0].value,
       password: password.current.children[0].value,
+    });
+  };
+  const handleGoogle = (data) => {
+    authService.register(data).then((res) => {
+      console.log(res);
+      if (res.status == "ok") {
+        alert(res.message);
+      } else {
+        alert(res.message);
+      }
     });
   };
   return (
@@ -67,6 +79,17 @@ const Register = () => {
           >
             Register
           </Button>
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              const { email, name, sub } = decode(
+                credentialResponse.credential
+              );
+              handleGoogle({ email, name, password: sub, google: true });
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
           <Button variant="contained" endIcon={<GoogleIcon />}>
             Register with Google
           </Button>
