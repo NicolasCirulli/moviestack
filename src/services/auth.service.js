@@ -47,6 +47,20 @@ const authService = {
         }
     },
 
+    async getApiKey(){
+        try {
+            const token = localStorage.getItem( 'token' )
+            const response = await auth.get('/apikey', {
+                headers : {
+                    Authorization : 'Bearer ' + token
+                }
+            })
+            return response.data
+        } catch (error) {
+            return error.response.data
+        }
+    }
+
 }
 
 export default authService
