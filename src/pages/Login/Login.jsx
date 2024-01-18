@@ -27,18 +27,25 @@ const Login = () => {
         alerts.success(res.message);
         dispatch(loadUser(res.user));
       } else {
-        alert(res.message);
+        if (res.errors) {
+          alerts.error(res.errors[0].message);
+        } else {
+          alerts.error(res.message);
+        }
       }
     });
   };
   const handleGoogle = (data) => {
     authService.login(data).then((res) => {
-      console.log(res);
       if (res.user) {
         alerts.success(res.message);
         dispatch(loadUser(res.user));
       } else {
-        alert(res.message);
+        if (res.errors) {
+          alerts.error(res.errors[0].message);
+        } else {
+          alerts.error(res.message);
+        }
       }
     });
   };
@@ -63,15 +70,6 @@ const Login = () => {
         maxWidth={"500px"}
         onInput={handleInput}
       >
-        <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            const { email, name, sub } = decode(credentialResponse.credential);
-            handleGoogle({ email, password: sub });
-          }}
-          onError={() => {
-            console.log("Login Failed");
-          }}
-        />
         ;
         <FormControl>
           <InputLabel htmlFor="email-login">Email address</InputLabel>
@@ -89,9 +87,20 @@ const Login = () => {
           >
             Login
           </Button>
-          <Button variant="contained" endIcon={<GoogleIcon />}>
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              const { email, name, sub } = decode(
+                credentialResponse.credential
+              );
+              handleGoogle({ email, password: sub });
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
+          {/*  <Button variant="contained" endIcon={<GoogleIcon />}>
             Login with Google
-          </Button>
+          </Button> */}
         </Stack>
         <Stack spacing={2} direction={"column"}>
           <Typography>Don't have account?</Typography>

@@ -15,15 +15,24 @@ import { useRef, useState } from "react";
 import authService from "../../services/auth.service";
 import { GoogleLogin } from "@react-oauth/google";
 import decode from "jwt-decode";
+import { alerts } from "../../utils/alerts";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ email: "", password: " " });
+  const navigate = useNavigate();
   const handleRegister = () => {
     authService.register(formData).then((res) => {
+      console.log(res);
       if (res.status == "ok") {
-        alert(res.message);
+        alerts.success("Account created");
+        setTimeout(() => navigate("/login"), 2000);
       } else {
-        alert(res.message);
+        if (res.errors) {
+          alerts.error(res.errors[0].message);
+        } else {
+          alerts.error(res.message);
+        }
       }
     });
   };
@@ -40,11 +49,15 @@ const Register = () => {
   };
   const handleGoogle = (data) => {
     authService.register(data).then((res) => {
-      console.log(res);
       if (res.status == "ok") {
-        alert(res.message);
+        alerts.success("Account created");
+        setTimeout(() => navigate("/login"), 2000);
       } else {
-        alert(res.message);
+        if (res.errors) {
+          alerts.error(res.errors[0].message);
+        } else {
+          alerts.error(res.message);
+        }
       }
     });
   };
@@ -90,9 +103,9 @@ const Register = () => {
               console.log("Login Failed");
             }}
           />
-          <Button variant="contained" endIcon={<GoogleIcon />}>
+          {/* <Button variant="contained" endIcon={<GoogleIcon />}>
             Register with Google
-          </Button>
+          </Button> */}
         </Stack>
         <Stack spacing={2} direction={"column"}>
           <Typography>Already have an account?</Typography>
