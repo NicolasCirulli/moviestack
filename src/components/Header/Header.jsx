@@ -16,14 +16,15 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
 import LINKS from "../../router/links";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { resetUser } from "../../store/reducer/user";
 const drawerWidth = 240;
 
 function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [navItems, setNavItems] = useState(LINKS.PUBLIC_ROUTES);
-
+  const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   useEffect(() => {
     if (user.name) {
@@ -44,7 +45,15 @@ function DrawerAppBar(props) {
         {navItems.map((item) => (
           <ListItem key={item.name} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <Link to={item.path}>
+              <Link
+                to={item.path}
+                style={{
+                  textDecoration: "none",
+                  color: "black",
+                  textAlign: "center",
+                  width: "100%",
+                }}
+              >
                 <ListItemText primary={item.name} />
               </Link>
             </ListItemButton>
@@ -60,6 +69,7 @@ function DrawerAppBar(props) {
   const navigate = useNavigate();
   const logout = () => {
     localStorage.removeItem("token");
+    dispatch(resetUser());
     navigate("/login");
   };
   return (
@@ -86,12 +96,20 @@ function DrawerAppBar(props) {
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
               <Link to={item.path} key={item.name}>
-                <Button sx={{ color: "#fff" }} onClick={() => navigate("/")}>
+                <Button
+                  variant="contained"
+                  sx={{ color: "#fff", borderColor: "#fff" }}
+                  onClick={() => navigate("/")}
+                >
                   {item.name}
                 </Button>
               </Link>
             ))}
-            <Button sx={{ color: "#fff" }} onClick={logout}>
+            <Button
+              variant="contained"
+              sx={{ color: "#fff", borderColor: "#fff" }}
+              onClick={logout}
+            >
               LOGOUT
             </Button>
           </Box>
@@ -114,7 +132,17 @@ function DrawerAppBar(props) {
             },
           }}
         >
-          {drawer}
+          <>
+            {drawer}
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={logout}
+              sx={{ margin: "0 30px" }}
+            >
+              LOGOUT
+            </Button>
+          </>
         </Drawer>
       </nav>
       <Box component="main" sx={{ p: 3 }}>
