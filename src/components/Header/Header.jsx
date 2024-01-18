@@ -105,13 +105,15 @@ function DrawerAppBar(props) {
                 </Button>
               </Link>
             ))}
-            <Button
-              variant="contained"
-              sx={{ color: "#fff", borderColor: "#fff" }}
-              onClick={logout}
-            >
-              LOGOUT
-            </Button>
+            {user.name && (
+              <Button
+                variant="contained"
+                sx={{ color: "#fff", borderColor: "#fff" }}
+                onClick={logout}
+              >
+                LOGOUT
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
@@ -134,14 +136,16 @@ function DrawerAppBar(props) {
         >
           <>
             {drawer}
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={logout}
-              sx={{ margin: "0 30px" }}
-            >
-              LOGOUT
-            </Button>
+            {user.name && (
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={logout}
+                sx={{ margin: "0 30px" }}
+              >
+                LOGOUT
+              </Button>
+            )}
           </>
         </Drawer>
       </nav>

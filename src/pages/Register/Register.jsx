@@ -8,7 +8,6 @@ import {
   Paper,
 } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
-import GoogleIcon from "@mui/icons-material/Google";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
