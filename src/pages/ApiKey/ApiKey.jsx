@@ -8,12 +8,9 @@ function ApiKey() {
   const user = useSelector((store) => store.user);
   const [apiKey, setApiKey] = useState(user.api_key);
 
-  console.log(user);
-
   const handleClick = () => {
-    authService.getApiKey().then((res) => {
+    authService.createApiKey().then((res) => {
       setApiKey(res.api_key);
-      console.log(res);
     });
   };
 
@@ -32,7 +29,6 @@ function ApiKey() {
             <Typography
               borderRadius={1}
               padding={1}
-              pad
               color={"Black"}
               bgcolor={"lightgray"}
               fontWeight={"bold"}

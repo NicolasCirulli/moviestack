@@ -59,6 +59,19 @@ const authService = {
         } catch (error) {
             return error.response.data
         }
+    },
+    async createApiKey(){
+        try {
+            const token = localStorage.getItem( 'token' )
+            const response = await auth.post('/apikey',{}, {
+                headers : {
+                    Authorization : 'Bearer ' + token
+                }
+            })
+            return response.data
+        } catch (error) {
+            return error.response.data
+        }
     }
 
 }
